@@ -18,8 +18,8 @@ As any arduino library (import library)
 
 
 # Examples
-Single_Ended
-## Pin Configuration
+## Single_Ended
+#### Pin Configuration
 - AIN1 index 1
 - AIN2 index 2
 - AIN3 index 3
@@ -29,7 +29,8 @@ Single_Ended
 - AIN7 index 7
 - AIN8 index 0
 
-Differential (negative and positive input may different)
+## Differential
+#### Pin Configuration (negative and positive input may different)
 - AIN1 and AIN2 index 2,3
 - AIN3 and AIN4 index 4,5
 - AIN5 and AIN6 index 6,7
