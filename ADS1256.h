@@ -1,7 +1,8 @@
 /*
         ADS1256.h - Arduino Library for communication with Texas Instrument ADS1256 ADC
         Written by Adien Akhmad, August 2015
-	Modifified  Jan 2019 by Axel Sepulveda for ATMEGA328
+        Modifified  Jan 2019 by Axel Sepulveda for ATMEGA328
+        Modfified Feb 2020 by @triqadafi for ARDUINO UNO and using BLACK VERSION ADS1256
 */
 
 #ifndef ADS1256_h
@@ -13,16 +14,19 @@
 	#define PIN_DRDY PINB
 	#define PINDEX_DRDY PB1
 	#define DDR_DRDY DDRB
+	#define D_DRDY 9
 
 	#define PORT_CS PORTB // Pin 10 on Arduino UNO
 	#define PIN_CS PINB
 	#define PINDEX_CS PB2
 	#define DDR_CS DDRB
+	#define D_CS 10
 
 	#define PORT_RESET PORTB // PIN 8 on Arduino UNO
 	#define PIN_REST PINB
 	#define PINDEX_RESET PB0
 	#define DDR_RESET DDRB
+	#define D_RESET 8
 
 #elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 	// Define PORT
@@ -137,7 +141,7 @@
 
 class ADS1256 {
  public:
-  ADS1256(float clockspdMhz, float vref, bool useresetpin);
+  ADS1256(float clockspdMhz, float vref);
   void writeRegister(unsigned char reg, unsigned char wdata);
   unsigned char readRegister(unsigned char reg);
   void sendCommand(unsigned char cmd);

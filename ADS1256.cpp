@@ -1,26 +1,27 @@
 /*
         ADS1256.h - Arduino Library for communication with Texas Instrument ADS1256 ADC
         Written by Adien Akhmad, August 2015
-		Modfified  Jan 2019 by Axel Sepulveda for ATMEGA328
+        Modfified Jan 2019 by Axel Sepulveda for ATMEGA328
+        Modfified Feb 2020 by @triqadafi for ARDUINO UNO and using BLACK VERSION ADS1256
 */
 
 #include "ADS1256.h"
 #include "Arduino.h"
 #include "SPI.h"
 
-ADS1256::ADS1256(float clockspdMhz, float vref, bool useResetPin) {
+ADS1256::ADS1256(float clockspdMhz, float vref) {
   // Set DRDY as input
   DDR_DRDY &= ~(1 << PINDEX_DRDY);
   // Set CS as output
   DDR_CS |= (1 << PINDEX_CS);
 
-  if (useResetPin) {
-    // set RESETPIN as output
-    DDR_RESET |= (1 << PINDEX_RESET);
-    // pull RESETPIN high
-    PORT_RESET |= (1 << PINDEX_RESET);
-  }
-
+  pinMode(D_RESET, OUTPUT);
+  digitalWrite(D_RESET, HIGH);
+  pinMode(D_DRDY, INPUT_PULLUP);
+  digitalWrite(D_DRDY, HIGH);
+  pinMode(D_CS, OUTPUT);
+  digitalWrite(D_CS, HIGH);
+  
   // Voltage Reference
   _VREF = vref;
 
@@ -64,7 +65,7 @@ void ADS1256::sendCommand(unsigned char reg) {
   CSON();
   waitDRDY();
   SPI.transfer(reg);
-  __builtin_avr_delay_cycles(8);  // t11
+  __builtin_avr_delay_cycles(10);  // t11
   CSOFF();
 }
 
@@ -197,6 +198,7 @@ void ADS1256::setChannel(byte AIN_P, byte AIN_N) {
 
   CSON();
   writeRegister(MUX, MUX_CHANNEL);
+  __builtin_avr_delay_cycles(30); // must be t6 200
   sendCommand(SYNC);
   sendCommand(WAKEUP);
   CSOFF();
